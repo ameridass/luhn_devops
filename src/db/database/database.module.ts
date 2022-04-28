@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Global()
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017', {
+    MongooseModule.forRoot('mongodb://mongo_prod:27017', {
       user: 'root_prod',
       pass: 'pass',
       dbName: 'devops',
@@ -19,7 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
           'mongodb://root_prod:pass@mongo_prod:27017/?authSource=admin&readPreference=primary';
         const uriDev =
           'mongodb://root_prod:pass@localhost:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false';
-        const client = new MongoClient(uriDev);
+        const client = new MongoClient(uriProd);
         await client.connect();
         const database = client.db('devops');
         return database;

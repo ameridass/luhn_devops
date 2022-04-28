@@ -22,11 +22,9 @@ export class AppController {
   @Post('validacion-luhn')
   getValidation(@Body() body: any): any {
     let isValidNumber = this.appService.valid_credit_card(body.creditCardNumber);
+    let newRegistro = this.database.collection('luhn')
+    isValidNumber ? newRegistro.insertOne({numero_tarjeta: body.creditCardNumber, is_valid: isValidNumber}) : ""
 
-    if (isValidNumber){
-      let newRegistro = this.database.collection('luhn')
-      newRegistro.insertOne({numero_tarjeta: body.creditCardNumber, is_valid: isValidNumber})
-    }
     return isValidNumber
   }
 }
