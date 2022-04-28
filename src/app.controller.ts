@@ -17,4 +17,8 @@ export class AppController {
   getLogin(@Body() payload: any) {
     return this.appService.getLogin(payload);
   }
+  @Post('validacion-luhn')
+  getValidation(@Body() body: any): any {
+    return this.appService.valid_credit_card(body.creditCardNumber);
+  }
 }

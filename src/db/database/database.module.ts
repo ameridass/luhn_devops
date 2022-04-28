@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017', {
-      user: 'root',
+      user: 'root_prod',
       pass: 'pass',
       dbName: 'devops',
     }),
@@ -15,9 +15,11 @@ import { MongooseModule } from '@nestjs/mongoose';
     {
       provide: 'MONGO',
       useFactory: async () => {
-        const uri =
-          'mongodb://root:pass@localhost:27017/?authSource=admin&readPreference=primary';
-        const client = new MongoClient(uri);
+        const uriProd =
+          'mongodb://root_prod:pass@mongo_prod:27017/?authSource=admin&readPreference=primary';
+        const uriDev =
+          'mongodb://root_prod:pass@localhost:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false';
+        const client = new MongoClient(uriDev);
         await client.connect();
         const database = client.db('devops');
         return database;
