@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {Controller, Get, Post, Body, Inject} from '@nestjs/common';
 import { AppService } from './app.service';
+import { Db } from 'mongodb'
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService,
+              @Inject('MONGO') private database: Db) {}
 
   @Get()
   getHello(): string {
@@ -19,6 +21,12 @@ export class AppController {
   }
   @Post('validacion-luhn')
   getValidation(@Body() body: any): any {
-    return this.appService.valid_credit_card(body.creditCardNumber);
+    let isValidNumber = this.appService.valid_credit_card(body.creditCardNumber);
+
+    if (isValidNumber){
+      let newRegistro = this.database.collection('luhn')
+      newRegistro.insertOne({numero_tarjeta: body.creditCardNumber, is_valid: isValidNumber})
+    }
+    return isValidNumber
   }
 }

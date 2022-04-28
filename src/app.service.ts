@@ -5,6 +5,8 @@ import { Db } from 'mongodb';
 export class AppService {
   constructor(@Inject('MONGO') private database: Db) {}
 
+
+
   getHello(): string {
     return 'Hello World!';
   }
